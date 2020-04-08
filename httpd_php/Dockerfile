@@ -22,6 +22,7 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 --enable-rewrite=shared \
 --enable-static-support \
 && make && make install \
+&& sed -i '$aInclude conf/vhosts/*.conf' /usr/local/apache/conf/httpd.conf \
 && sed -i '1i\#!/usr/bin/perl -w' /usr/local/apache/bin/apxs \
 && cd /home/packages/php-7.2.29 \
 && ./configure \
@@ -44,6 +45,8 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 --enable-sockets \
 --enable-pcntl \
 --enable-xml \
-&& make && make install
+&& make && make install \
+&& rm -rf /home/packages
+VOLUME ["/usr/local/apache/logs", "/usr/local/apache/conf/vhosts", "/usr/local/php/etc", "/usr/local/php/var", "home/www"]
 EXPOSE 80
 CMD ["/usr/local/apache/bin/httpd", "-DFOREGROUND"]

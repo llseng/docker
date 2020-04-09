@@ -1,5 +1,7 @@
 FROM centos:centos7
+#解压软件包
 ADD ./packages/* /home/packages/
+#安装必备软件包
 RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel openssl openssl-devel libcurl-devel perl \
 && cd /home/packages/apr-1.7.0 \
 && ./configure --prefix=/usr/local/apr \
@@ -22,7 +24,9 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 --enable-rewrite=shared \
 --enable-static-support \
 && make && make install \
+#新增Apache配置
 && sed -i '$aInclude conf/vhosts/*.conf' /usr/local/apache/conf/httpd.conf \
+#设置ApacheApxs执行脚本
 && sed -i '1i\#!/usr/bin/perl -w' /usr/local/apache/bin/apxs \
 && cd /home/packages/php-7.2.29 \
 && ./configure \
@@ -46,7 +50,9 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 --enable-pcntl \
 --enable-xml \
 && make && make install \
+#清除软件包
 && rm -rf /home/packages
+#绑定匿名卷,防止删除容器导致数据丢失
 VOLUME ["/usr/local/apache/logs", "/usr/local/apache/conf/vhosts", "/usr/local/php/etc", "/usr/local/php/var", "home/www"]
 EXPOSE 80
 CMD ["/usr/local/apache/bin/httpd", "-DFOREGROUND"]

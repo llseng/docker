@@ -2,7 +2,7 @@ FROM centos:centos7
 #解压软件包
 ADD ./packages/* /home/packages/
 #安装必备软件包
-RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel openssl openssl-devel libcurl-devel perl \
+RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel openssl openssl-devel libcurl-devel perl autoconf \
 && cd /home/packages/apr-1.7.0 \
 && ./configure --prefix=/usr/local/apr \
 && make && make install \
@@ -51,7 +51,14 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 --enable-xml \
 && make && make install \
 #清除软件包
-&& rm -rf /home/packages
+&& rm -rf /home/packages \
+#添加项目目录
+&& mkdir -p /home/www \
+#添加环境变量
+&& sed -i '$aexport PATH=$PATH:/usr/local/apache/bin:/usr/local/php/bin' /etc/bashrc \
+&& source ~/.bashrc
+COPY ./vhosts /usr/local/apache/conf/vhosts
+COPY ./phpetc/php.ini /usr/local/php/etc
 #绑定匿名卷,防止删除容器导致数据丢失
 VOLUME ["/usr/local/apache/logs", "/usr/local/apache/conf/vhosts", "/usr/local/php/etc", "/usr/local/php/var", "home/www"]
 EXPOSE 80

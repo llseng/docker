@@ -59,7 +59,8 @@ RUN yum install -y wget make gcc gcc-c++ expat-devel zlib-devel libxml2-devel op
 && source ~/.bashrc
 COPY ./vhosts /usr/local/apache/conf/vhosts
 COPY ./phpetc/php.ini /usr/local/php/etc
-#绑定匿名卷,防止删除容器导致数据丢失
+#绑定匿名卷,防止删除容器导致数据丢失 
+#PS:删除容器不会清除匿名卷,如有需要可使用[docker rm -v ID]同时删除匿名卷,或[docker volume prune]清除未在使用的匿名卷
 VOLUME ["/usr/local/apache/logs", "/usr/local/apache/conf/vhosts", "/usr/local/php/etc", "/usr/local/php/var", "home/www"]
 EXPOSE 80
 CMD ["/usr/local/apache/bin/httpd", "-DFOREGROUND"]

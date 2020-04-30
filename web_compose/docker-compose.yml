@@ -1,0 +1,33 @@
+version: "3"
+services:
+ mysql:
+  image: "mysql:5.7.29"
+  volumes:
+   - "./mysql/mysql.conf.d:/etc/mysql/mysql.conf.d"
+ redis:
+  image: "redis:5.0.9"
+  volumes:
+   - "./redis/data:/data"
+   - "./redis/redis.conf:/etc/redis.conf"
+ fpm:
+  image: "php:7.2.30-fpm"
+  volumes:
+   - "./www:/var/www/html"
+   - "./fpm/php-fpm.d:/usr/local/etc/php-fpm.d"
+   - "./fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf"
+  links:
+   - "mysql"
+   - "redis"
+  depends_on:
+   - "mysql"
+   - "redis"
+ nginx:
+  image: "nginx:1.18.0"
+  volumes:
+   - "./www:/var/www/html"
+   - "./nginx/conf.d:/etc/nginx/conf.d"
+   - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+  links:
+   - "fpm"
+  depends_on:
+   - "fpm"

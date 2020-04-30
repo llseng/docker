@@ -2,6 +2,8 @@ version: "3"
 services:
  mysql:
   image: "mysql:5.7.29"
+  environment:
+   MYSQL_ROOT_PASSWORD: "123456"
   volumes:
    - "./mysql/mysql.conf.d:/etc/mysql/mysql.conf.d"
  redis:

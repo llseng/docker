@@ -1,4 +1,0 @@
-mysql/log/*
-redis/log/*
-nginx/log/*
-fpm/log/*

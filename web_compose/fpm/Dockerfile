@@ -13,7 +13,7 @@ RUN docker-php-ext-install bcmath \
 && docker-php-ext-install mysqli \
 && docker-php-ext-install sockets\
 && docker-php-ext-install gd \
-&& pecl install redis \
+&& pecl install http://pecl.php.net/get/redis-5.0.0.tgz \
 && docker-php-ext-enable redis
 # 安装composer
 RUN curl -sS https://getcomposer.org/installer | php \

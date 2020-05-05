@@ -6,5 +6,5 @@ BASEPATH=$(cd `dirname $0`; pwd)
 rm -rf ${BASEPATH}/{mysql,redis,nginx,fpm}/log/*
 rm -rf ${BASEPATH}/{mysql,redis}/data/*
 # 权限
-chmod -R 0777 ${BASEPATH}/{mysql,redis,nginx,fpm}/log
-chmod -R 0777 ${BASEPATH}/{mysql,redis}/data
+chmod 0777 ${BASEPATH}/{mysql,redis,nginx,fpm}/log
+chmod 0777 ${BASEPATH}/{mysql,redis}/data

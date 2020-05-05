@@ -18,7 +18,8 @@ services:
    - "./redis/log:/var/log/redis"
  fpm:
   container_name: "web_fpm"
-  image: "php:7.2.30-fpm"
+#  image: "php:7.2.30-fpm"
+  build: "./fpm"
   volumes:
    - "./www:/var/www/html"
    - "./fpm/php-fpm.d:/usr/local/etc/php-fpm.d"
